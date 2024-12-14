@@ -9,10 +9,10 @@ model_path = "./ppo_grid2op_model"
 log_dir = "./tensorboard_logs/"
 vec_env = make_vec_env(lambda: Grid2opEnvWrapper(), n_envs=1)
 
-sb3_algo2 = PPO.load(model_path, env=vec_env)
-print("Model loaded successfully")
+#sb3_algo2 = PPO.load(model_path, env=vec_env)
+#print("Model loaded successfully")
 
-"""
+
 custom_hyperparameters = {
     "learning_rate": 1e-5,
     "n_steps": 1024,
@@ -32,7 +32,7 @@ sb3_algo2 = PPO(
     tensorboard_log="./tensorboard_logs/",
     **custom_hyperparameters
 )
-"""
+
 sb3_algo2.learn(total_timesteps=100000, tb_log_name="PPO_Grid2op")
 
 # Save the model
