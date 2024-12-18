@@ -10,6 +10,7 @@ from grid2op.gym_compat import GymEnv, BoxGymObsSpace, DiscreteActSpace, BoxGymA
 from lightsim2grid import LightSimBackend
 
 
+
 class Grid2opEnvWrapper(Env):
     def __init__(self,
                  env_config: Dict[Literal["backend_cls",
@@ -34,7 +35,6 @@ class Grid2opEnvWrapper(Env):
         backend = backend_cls(**backend_options)
 
         # create the grid2op environment
-        env_name = "l2rpn_neurips_2020_track1_small"
         if "env_name" in env_config:
             env_name = env_config["env_name"]
         if "env_is_test" in env_config:
