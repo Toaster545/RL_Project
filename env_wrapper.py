@@ -34,7 +34,7 @@ class Grid2opEnvWrapper(Env):
         backend = backend_cls(**backend_options)
 
         # create the grid2op environment
-        env_name = "l2rpn_neurips_2020_track1_small"
+        env_name = "l2rpn_case14_sandbox"
         if "env_name" in env_config:
             env_name = env_config["env_name"]
         if "env_is_test" in env_config:
