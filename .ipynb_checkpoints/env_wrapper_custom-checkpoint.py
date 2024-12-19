@@ -8,7 +8,7 @@ from gymnasium.spaces import Discrete, MultiDiscrete, Box
 import grid2op
 from grid2op.gym_compat import GymEnv, BoxGymObsSpace, DiscreteActSpace, BoxGymActSpace, MultiDiscreteActSpace
 from lightsim2grid import LightSimBackend
-from grid2op.Reward import EpisodeDurationReward
+from grid2op.Reward import EpisodeDurationReward, L2RPNReward
 
 
 class Grid2opEnvWrapper(Env):
@@ -47,7 +47,7 @@ class Grid2opEnvWrapper(Env):
         if "reward_class" in env_config:
             reward_class = env_config["reward_class"]
         else:
-            reward_class = EpisodeDurationReward
+            reward_class = L2RPNReward
         data_set_label = env_config["data_set"]
         self._g2op_env = grid2op.make(env_name+f"_{data_set_label}", backend=backend, test=is_test, reward_class=reward_class)
         # NB by default this might be really slow (when the environment is reset)
