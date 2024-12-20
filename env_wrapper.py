@@ -8,7 +8,7 @@ from gymnasium.spaces import Discrete, MultiDiscrete, Box
 import grid2op
 from grid2op.gym_compat import GymEnv, BoxGymObsSpace, DiscreteActSpace, BoxGymActSpace, MultiDiscreteActSpace
 from lightsim2grid import LightSimBackend
-
+from grid2op.Reward import EpisodeDurationReward
 
 
 class Grid2opEnvWrapper(Env):
@@ -19,7 +19,9 @@ class Grid2opEnvWrapper(Env):
                                           "env_is_test",
                                           "obs_attr_to_keep",
                                           "act_type",
-                                          "act_attr_to_keep"],
+                                          "act_attr_to_keep",
+                                          "reward_class",
+                                          "data_set"],
                                   Any] = None):
         super().__init__()
         if env_config is None:
@@ -41,7 +43,13 @@ class Grid2opEnvWrapper(Env):
             is_test = bool(env_config["env_is_test"])
         else:
             is_test = False
-        self._g2op_env = grid2op.make(env_name, backend=backend, test=is_test)
+
+        if "reward_class" in env_config:
+            reward_class = env_config["reward_class"]
+        else:
+            reward_class = EpisodeDurationReward
+        data_set_label = env_config["data_set"]
+        self._g2op_env = grid2op.make(env_name+f"_{data_set_label}", backend=backend, test=is_test, reward_class=reward_class)
         # NB by default this might be really slow (when the environment is reset)
         # see https://grid2op.readthedocs.io/en/latest/data_pipeline.html for maybe 10x speed ups !
         # TODO customize reward or action_class for example !
@@ -63,6 +71,18 @@ class Grid2opEnvWrapper(Env):
                                      high=self._gym_env.observation_space.high)
 
         # customize the action space
+        # act_attr_to_keep = [
+        #     "change_bus",
+        #     "change_line_status",
+        #     "curtail",
+        #     "curtail_mw",
+        #     "redispatch",
+        #     "set_bus",
+        #     "set_line_status",
+        #     "set_line_status_simple",
+        #     "set_storage"
+        # ]
+        
         act_type = "discrete"
         if "act_type" in env_config:
             act_type = env_config["act_type"]

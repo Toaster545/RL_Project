@@ -1,0 +1,13 @@
+{
+    "env_name": "l2rpn_case14_sandbox",
+    "env_is_test": false,
+    "obs_attr_to_keep": [
+        "gen_p",
+        "load_p",
+        "p_or",
+        "rho",
+        "line_status"
+    ],
+    "act_type": "discrete",
+    "data_set": "train"
+}
